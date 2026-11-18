@@ -50,10 +50,10 @@ Mis respuestas y lo que quedó en la función: aprobar es un resultado de 70 o m
 PASO 2. REGISTRO DE ACEPTAR, RECHAZAR O REVISAR
 
 Entrada 1. Sin llave de API, medir colores en lugar de usar una IA que vea la captura
-- Qué propuso la IA: como no tengo llave de API, medir los colores, la intensidad y el contraste de las imágenes dentro del navegador, sin ningún modelo de IA.
+- Qué propuso la IA: como no tengo llave de API, medir los colores, la intensidad y el contraste de las imágenes dentro del navegador, sin ningún modelo de IA. Para comparar la personalidad, la IA agregó una lista de palabras como disruptiva, creativa o elegante, cada una con un rango de intensidad, contraste y variedad de color.
 - Campo de mi especificación en juego: campo 1, qué hace. Mi especificación hablaba de saber si el contenido es correcto para llegar a los clientes. Con esta propuesta la función no puede juzgar el producto, el mercado ni lo que dicen los textos. Solo mide colores.
 - Mi decisión: Aceptar.
-- Por qué: no tengo llave de API y quería algo sencillo que sí funcionara a tiempo. Dejé escrita la limitación en la página y en esta bitácora para no prometer más de lo que hace.
+- Por qué: no tengo llave de API y quería algo sencillo que sí funcionara a tiempo. Dejé escrita la limitación en la página y en esta bitácora para no prometer más de lo que hace. Acepté también la lista de palabras, porque sin ella no hay cómo comparar la personalidad. Reconozco que los rangos de la lista son una suposición de la IA y no salen de ninguna fuente. Por eso el resultado es una guía y no una medición científica.
 
 Entrada 2. La primera versión no cumplía mi campo 3
 - Qué pasó: al correr mi caso de prueba, la primera versión dio colores 14 de 100 pero personalidad 100. El total fue 48 y el veredicto fue "Hay que ajustar". Mi campo 3 decía que debía salir no alineada. No acepté ese primer resultado como bueno.
@@ -69,11 +69,11 @@ Entrada 3. Sin branding no se debe aprobar
 - Mi decisión: Aceptar.
 - Por qué: aprobar sin comparar colores sería engañar al cliente, y el ofrecimiento del servicio de branding es justo lo que pedí en mi campo 2.
 
-Entrada 4. Cosas que la IA agregó y no estaban en mi especificación
-- Qué agregó la IA: una lista de palabras de personalidad con rangos de intensidad, contraste y variedad de color, y un botón "Hablar con Vyko" que manda el resultado por WhatsApp.
-- Campo en juego: campo 1. Ninguna de las dos cosas estaba escrita en mi especificación.
-- Mi decisión: Aceptar las dos.
-- Por qué: sin la lista de palabras no hay cómo comparar la personalidad, y el botón conecta el diagnóstico con una venta de Vyko. Reconozco que los rangos de la lista son una suposición de la IA y no salen de ninguna fuente. Por eso el resultado es una guía y no una medición científica.
+Entrada 4. El botón "Hablar con Vyko" que no estaba en mi especificación
+- Qué propuso la IA: agregar al final del resultado un botón "Hablar con Vyko" que manda el resultado por WhatsApp.
+- Campo en juego: campo 1 y campo 2. Ese botón no estaba escrito en mi especificación. Lo único que mi campo 2 pide ofrecer por contacto es el servicio de branding cuando el cliente no tiene branding.
+- Mi decisión: Rechazar.
+- Por qué: no estaba en mi especificación y la función cumple mi campo 3 sin él. Quité el botón del código. Dejé solo el botón "Quiero mi branding", porque ese sí lo pide mi campo 2. El commit de esta decisión se llama "Quito el botón Hablar con Vyko: no estaba en mi especificación".
 
 
 PASO 3. REGISTRO DE VALIDACIÓN
@@ -122,6 +122,6 @@ Para qué la usé:
 Lo que decidí y verifiqué yo:
 - Elegí la función, escribí los campos 1 y 2 de la especificación y el caso de prueba del campo 3, con las imágenes que di.
 - Decidí hacerlo sin API y sin guardar datos.
-- Decidí aceptar las 4 propuestas de la IA, con las razones de arriba.
+- Decidí aceptar 3 propuestas de la IA y rechazar 1, el botón de WhatsApp, con las razones de arriba.
 - Verifiqué que el resultado de mi caso de prueba coincide con mi campo 3.
-- Reconozco que los rangos de las palabras y la lista de palabras son suposiciones de la IA.
+- Reconozco que la lista de palabras y sus rangos son suposiciones de la IA.
