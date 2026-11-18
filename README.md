@@ -1,8 +1,25 @@
 # Diagnóstico de marca de Vyko
 
 Assignment 2 de Applied Algorithmic Thinking (LINQ03.2).
+Helena Sofía Meneses Martínez
 
-Función nueva para la página de Vyko, la agencia de marketing de Helena Sofía Meneses Martínez: el cliente sube una captura de su red social, describe en 3 palabras la personalidad que quiere proyectar y comparte su branding. La función revisa si su contenido está llegando a las personas correctas.
+Función nueva para la página de Vyko, una agencia de marketing. El cliente sube una captura de su red social, escribe en 3 palabras la personalidad que quiere proyectar y comparte su branding. La página dice si su red social se parece a su marca.
 
-- Especificación, decisiones y pruebas: `PROMPT_LOG.md`
-- Estado: en construcción
+## Cómo funciona
+
+1. Mide los colores con carácter de la captura de la red social y del branding.
+2. Compara cada color de la marca con el color más cercano de la red.
+3. Compara la intensidad, el contraste y la variedad de color de la red con lo que se espera de cada palabra de personalidad.
+4. Da un resultado de 0 a 100 y un veredicto: va por buen camino, hay que ajustar o no está alineada.
+5. Si el cliente no tiene branding, ofrece el servicio de branding de Vyko por WhatsApp.
+
+Las imágenes se analizan en el navegador y no se suben a ningún servidor. No usa llaves ni API.
+
+## Lo que no hace
+
+No evalúa qué producto vendes, a qué mercado le hablas ni lo que dicen tus textos. Mide colores y energía visual. El botón azul de Instagram en una captura cuenta como un color de la red.
+
+## Archivos
+
+- `index.html`: la página y la función.
+- `PROMPT_LOG.md`: especificación de 3 campos, decisiones de aceptar, rechazar o revisar, validación y uso de IA.
