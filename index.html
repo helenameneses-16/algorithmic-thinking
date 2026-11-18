@@ -388,9 +388,7 @@
       h += '<div class="offer"><h3>¿Todavía no tienes branding?</h3><p>En Vyko lo creamos contigo: logo, colores y tipografía para que tu marca se reconozca.</p><a class="btn" target="_blank" rel="noopener" href="' +
         waLink(["Hola, Vyko.", "Vengo del diagnóstico de marca de la página web.", "Todavía no tengo branding y me interesa el servicio de branding."]) + '">Quiero mi branding →</a></div>';
     }
-    h += '<div class="actions"><a class="btn dark" target="_blank" rel="noopener" href="' +
-      waLink(["Hola, Vyko.", "Vengo del diagnóstico de marca de la página web.", "Mi resultado fue " + cifra + " de 100: " + etiqueta + ".", "Quiero hablar para mejorar mi contenido."]) +
-      '">Hablar con Vyko →</a></div></div>';
+    h += "</div>";
     out.innerHTML = h;
     out.scrollIntoView({ behavior: "smooth", block: "start" });
   }
