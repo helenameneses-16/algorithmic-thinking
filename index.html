@@ -4,22 +4,436 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Diagnóstico de marca — Vyko</title>
+<meta name="description" content="Sube una captura de tu red social, cuéntanos qué personalidad quieres proyectar y te decimos si tu contenido se parece a tu marca.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root { --ink:#111111; --cream:#FFF8EC; --lime:#D4FF3D; --purple:#7B2FF7; }
+  :root { --ink:#111111; --cream:#FFF8EC; --lime:#D4FF3D; --orange:#FF7A00; --purple:#7B2FF7; --fuchsia:#E6007E; --border: 3px solid var(--ink); }
   * { box-sizing: border-box; }
-  body { margin:0; min-height:100vh; display:grid; place-items:center; background:var(--cream); color:var(--ink); font-family: system-ui, sans-serif; padding:24px; }
-  main { max-width:560px; text-align:center; }
-  h1 { font-size: clamp(2rem, 6vw, 3rem); line-height:1; margin:0 0 16px; text-transform:uppercase; }
-  h1 span { background:var(--lime); padding:0 .15em; }
-  p { font-size:1.1rem; line-height:1.5; }
-  .tag { display:inline-block; background:var(--purple); color:var(--cream); border-radius:999px; padding:6px 14px; font-weight:700; margin-bottom:20px; }
+  body { margin:0; background:var(--cream); color:var(--ink); font-family:'Poppins', system-ui, sans-serif; line-height:1.5; }
+  h1, h2, h3 { font-family:'Archivo Black', system-ui, sans-serif; text-transform:uppercase; font-weight:400; line-height:1; margin:0; }
+  header { background:var(--ink); color:var(--cream); padding:14px 20px; border-bottom:3px solid var(--lime); }
+  header b { font-family:'Archivo Black', sans-serif; font-size:1.4rem; }
+  header span { color:var(--lime); font-weight:600; margin-left:10px; font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; }
+  main { max-width:820px; margin:0 auto; padding:32px 20px 64px; }
+  .tag { display:inline-block; background:var(--purple); color:var(--cream); border-radius:999px; padding:4px 14px; font-weight:700; font-size:.8rem; margin-bottom:14px; }
+  h1 { font-size:clamp(2rem, 7vw, 3.4rem); margin-bottom:14px; }
+  h1 em { font-style:normal; background:var(--lime); padding:0 .12em; }
+  .lead { font-size:1.1rem; max-width:60ch; }
+  form { margin-top:28px; display:grid; gap:22px; }
+  fieldset { border:var(--border); border-radius:20px; background:#fff; padding:20px; margin:0; box-shadow:6px 6px 0 var(--ink); }
+  legend { font-family:'Archivo Black', sans-serif; text-transform:uppercase; padding:0 10px; background:var(--lime); border:var(--border); border-radius:999px; font-size:.95rem; }
+  label { font-weight:600; display:block; margin:10px 0 6px; }
+  input[type=file], input[type=text], textarea { width:100%; font:inherit; padding:12px; border:var(--border); border-radius:12px; background:var(--cream); }
+  textarea { min-height:84px; resize:vertical; }
+  .hint { font-size:.9rem; opacity:.8; margin:6px 0 0; }
+  .radios { display:flex; flex-wrap:wrap; gap:10px; margin:8px 0; }
+  .radios label { display:flex; align-items:center; gap:8px; margin:0; border:var(--border); border-radius:999px; padding:8px 14px; cursor:pointer; background:var(--cream); font-size:.95rem; }
+  .radios input { accent-color: var(--purple); }
+  .preview { margin-top:12px; max-height:220px; max-width:100%; border:var(--border); border-radius:12px; display:none; }
+  .btn { font-family:'Archivo Black', sans-serif; text-transform:uppercase; font-size:1.05rem; color:var(--ink); background:var(--lime); border:var(--border); border-radius:16px; padding:14px 22px; cursor:pointer; box-shadow:5px 5px 0 var(--ink); text-decoration:none; display:inline-block; }
+  .btn:hover { transform:translate(-2px,-2px); box-shadow:7px 7px 0 var(--ink); }
+  .btn:active { transform:translate(4px,4px); box-shadow:0 0 0 var(--ink); }
+  .btn.dark { background:var(--ink); color:var(--cream); }
+  .error { color:#B00020; font-weight:700; margin:0; min-height:1.4em; }
+  #resultado { margin-top:34px; }
+  .card { border:var(--border); border-radius:24px; background:#fff; padding:24px; box-shadow:8px 8px 0 var(--ink); }
+  .score { display:flex; align-items:center; gap:18px; flex-wrap:wrap; }
+  .num { font-family:'Archivo Black', sans-serif; font-size:4rem; line-height:1; }
+  .verdict { display:inline-block; font-family:'Archivo Black', sans-serif; text-transform:uppercase; padding:6px 16px; border:var(--border); border-radius:999px; }
+  .v-parcial { background:var(--cream); } .v-bien { background:var(--lime); } .v-medio { background:var(--orange); } .v-mal { background:var(--fuchsia); color:var(--cream); }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 14px; }
+  .chip { display:inline-flex; align-items:center; gap:6px; border:2px solid var(--ink); border-radius:999px; padding:3px 10px 3px 4px; font-size:.8rem; font-weight:600; background:var(--cream); }
+  .chip i { width:20px; height:20px; border-radius:50%; border:2px solid var(--ink); display:inline-block; }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:16px; }
+  @media (max-width:640px){ .two { grid-template-columns:1fr; } }
+  h3 { font-size:1.05rem; margin:18px 0 8px; }
+  ul { padding-left:20px; margin:6px 0; } li { margin:6px 0; }
+  .offer { margin-top:18px; border:var(--border); border-radius:16px; background:var(--purple); color:var(--cream); padding:18px; }
+  .offer h3 { margin-top:0; color:var(--lime); }
+  .actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:18px; }
+  footer { max-width:820px; margin:0 auto; padding:0 20px 40px; font-size:.85rem; opacity:.8; }
+  :focus-visible { outline:3px dashed var(--purple); outline-offset:3px; }
 </style>
 </head>
 <body>
+<header><b>vyko</b><span>The Iconic Marketing Agency.</span></header>
+
 <main>
-  <div class="tag">En construcción</div>
-  <h1>Diagnóstico <span>de marca</span></h1>
-  <p>Una función nueva de Vyko: sube tu red social, cuéntanos qué personalidad quieres proyectar y te decimos si tu contenido llega a las personas correctas.</p>
+  <div class="tag">Diagnóstico de marca</div>
+  <h1>¿Tu red social se parece a <em>tu marca?</em></h1>
+  <p class="lead">Sube una captura de tu red social, cuéntanos en 3 palabras la personalidad que quieres proyectar y comparte tu branding. Te decimos qué tan alineado está tu contenido y qué cambiar primero.</p>
+
+  <form id="form" novalidate>
+    <fieldset>
+      <legend>1 · Tu red social</legend>
+      <label for="red">Captura de pantalla de tu perfil o de tus publicaciones</label>
+      <input id="red" type="file" accept="image/png,image/jpeg,image/webp">
+      <p class="hint">Mejor si se ve la cuadrícula de publicaciones. Tu imagen se analiza en tu navegador y no se sube a ningún servidor.</p>
+      <img id="red-prev" class="preview" alt="Vista previa de la captura de tu red social">
+    </fieldset>
+
+    <fieldset>
+      <legend>2 · Tu personalidad de marca</legend>
+      <label for="palabras">Escribe 3 palabras separadas por coma</label>
+      <input id="palabras" type="text" placeholder="Por ejemplo: disruptiva, innovadora, creativa" autocomplete="off">
+      <p class="hint">Entiendo palabras como disruptiva, creativa, elegante, minimalista, cercana, divertida, moderna, profesional, artesanal y más.</p>
+    </fieldset>
+
+    <fieldset>
+      <legend>3 · Tu branding</legend>
+      <div class="radios" role="radiogroup" aria-label="Cómo compartes tu branding">
+        <label><input type="radio" name="brand" value="img" checked> Subir una imagen</label>
+        <label><input type="radio" name="brand" value="txt"> Escribirlo</label>
+        <label><input type="radio" name="brand" value="none"> No tengo branding</label>
+      </div>
+      <div id="brand-img">
+        <label for="brand-file">Imagen de tu branding (logo, paleta o manual)</label>
+        <input id="brand-file" type="file" accept="image/png,image/jpeg,image/webp">
+        <img id="brand-prev" class="preview" alt="Vista previa de tu branding">
+      </div>
+      <div id="brand-txt" hidden>
+        <label for="brand-text">Explica tu branding</label>
+        <textarea id="brand-text" placeholder="Por ejemplo: mis colores son #111111, #D4FF3D y #FF7A00"></textarea>
+        <p class="hint">Si escribes los colores con su código (por ejemplo #D4FF3D), puedo compararlos con tu red social.</p>
+      </div>
+    </fieldset>
+
+    <p class="error" id="error" role="alert"></p>
+    <div><button class="btn" type="submit">Hacer mi diagnóstico →</button></div>
+  </form>
+
+  <section id="resultado" aria-live="polite"></section>
 </main>
+
+<footer>
+  Esta versión mide los colores y la intensidad visual de tu captura. No evalúa qué producto vendes, ni a qué mercado le hablas, ni lo que dicen tus textos.
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var WHATSAPP = "525567770192";
+  var $ = function (s) { return document.querySelector(s); };
+
+  /* ---------- Colores ---------- */
+  function rgbToHsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    var mx = Math.max(r, g, b), mn = Math.min(r, g, b), l = (mx + mn) / 2, h = 0, s = 0, d = mx - mn;
+    if (d > 0) {
+      s = l > 0.5 ? d / (2 - mx - mn) : d / (mx + mn);
+      if (mx === r) h = ((g - b) / d + (g < b ? 6 : 0));
+      else if (mx === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h *= 60;
+    }
+    return { h: h, s: s, l: l };
+  }
+  function rgbToLab(r, g, b) {
+    function f(c) { c /= 255; return c > 0.04045 ? Math.pow((c + 0.055) / 1.055, 2.4) : c / 12.92; }
+    var R = f(r), G = f(g), B = f(b);
+    var X = (R * 0.4124 + G * 0.3576 + B * 0.1805) / 0.95047;
+    var Y = (R * 0.2126 + G * 0.7152 + B * 0.0722);
+    var Z = (R * 0.0193 + G * 0.1192 + B * 0.9505) / 1.08883;
+    function t(v) { return v > 0.008856 ? Math.cbrt(v) : 7.787 * v + 16 / 116; }
+    return [116 * t(Y) - 16, 500 * (t(X) - t(Y)), 200 * (t(Y) - t(Z))];
+  }
+  function dE(a, b) { return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2) + Math.pow(a[2] - b[2], 2)); }
+  function hex(r, g, b) { return "#" + [r, g, b].map(function (v) { return ("0" + Math.round(v).toString(16)).slice(-2); }).join("").toUpperCase(); }
+  function hexToRgb(h) { return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]; }
+
+  function esColor(hsl) { return hsl.s >= 0.4 && hsl.l >= 0.2 && hsl.l <= 0.85; }
+
+  /* Mide una imagen: paleta de colores con carácter, intensidad, contraste y variedad */
+  function medirPixeles(data) {
+    var total = 0, chroma = 0, sumSat = 0, sumL = 0, sumL2 = 0;
+    var cubos = {}, hues = new Array(12).fill(0);
+    for (var i = 0; i < data.length; i += 4) {
+      if (data[i + 3] < 200) continue;
+      var r = data[i], g = data[i + 1], b = data[i + 2];
+      var hsl = rgbToHsl(r, g, b);
+      total++; sumL += hsl.l; sumL2 += hsl.l * hsl.l;
+      if (esColor(hsl)) {
+        chroma++; sumSat += hsl.s; hues[Math.min(11, Math.floor(hsl.h / 30))]++;
+        var k = (r >> 5) * 64 + (g >> 5) * 8 + (b >> 5);
+        var c = cubos[k] || (cubos[k] = { n: 0, r: 0, g: 0, b: 0 });
+        c.n++; c.r += r; c.g += g; c.b += b;
+      }
+    }
+    if (!total) return null;
+    var meanL = sumL / total, std = Math.sqrt(Math.max(0, sumL2 / total - meanL * meanL));
+    var lista = Object.keys(cubos).map(function (k) { var c = cubos[k]; return { n: c.n, r: c.r / c.n, g: c.g / c.n, b: c.b / c.n }; })
+      .sort(function (a, b) { return b.n - a.n; });
+    var paleta = [];
+    lista.forEach(function (c) {
+      if (paleta.length >= 5) return;
+      var lab = rgbToLab(c.r, c.g, c.b);
+      if (paleta.every(function (p) { return dE(p.lab, lab) > 18; })) paleta.push({ hex: hex(c.r, c.g, c.b), lab: lab, n: c.n });
+    });
+    var suma = paleta.reduce(function (s, p) { return s + p.n; }, 0) || 1;
+    paleta.forEach(function (p) { p.peso = p.n / suma; });
+    var variedad = hues.filter(function (n) { return chroma && n / chroma >= 0.05; }).length;
+    return {
+      paleta: paleta,
+      intensidad: chroma ? sumSat / chroma : 0,
+      contraste: Math.min(1, std * 2),
+      variedad: variedad,
+      pctColor: chroma / total
+    };
+  }
+
+  function paletaDeHex(lista) {
+    var con = lista.filter(function (h) { var c = hexToRgb(h); return esColor(rgbToHsl(c[0], c[1], c[2])); });
+    if (!con.length) return { sinColores: true };
+    var ps = con.map(function (h) { var rgb = hexToRgb(h); return { hex: h, lab: rgbToLab(rgb[0], rgb[1], rgb[2]), peso: 1 / con.length }; });
+    return { paleta: ps, omitidos: lista.length - con.length };
+  }
+
+  /* ---------- Personalidad: palabras y lo que esperamos ver ---------- */
+  var LEXICO = {
+    disruptiv:   { sat: [0.55, 1], con: [0.22, 1], var: [2, 6] },
+    innovador:   { sat: [0.45, 1], con: [0.18, 1], var: [1, 4] },
+    creativ:     { sat: [0.45, 1], con: [0.15, 1], var: [3, 6] },
+    audaz:       { sat: [0.60, 1], con: [0.25, 1], var: [2, 6] },
+    atrevid:     { sat: [0.60, 1], con: [0.25, 1], var: [2, 6] },
+    divertid:    { sat: [0.50, 1], con: [0.12, 1], var: [3, 6] },
+    juguet:      { sat: [0.50, 1], con: [0.12, 1], var: [3, 6] },
+    alegr:       { sat: [0.50, 1], con: [0.12, 1], var: [3, 6] },
+    juvenil:     { sat: [0.50, 1], con: [0.12, 1], var: [2, 6] },
+    elegante:    { sat: [0, 0.50], con: [0.20, 1], var: [1, 3] },
+    minimalist:  { sat: [0, 0.40], con: [0.10, 0.5], var: [1, 2] },
+    sobri:       { sat: [0, 0.55], con: [0.15, 0.6], var: [1, 3] },
+    seri:        { sat: [0, 0.55], con: [0.15, 0.6], var: [1, 3] },
+    profesional: { sat: [0, 0.55], con: [0.15, 0.6], var: [1, 3] },
+    confiable:   { sat: [0, 0.55], con: [0.15, 0.6], var: [1, 3] },
+    calid:       { sat: [0.30, 0.80], con: [0.08, 0.5], var: [1, 4] },
+    cercan:      { sat: [0.30, 0.80], con: [0.08, 0.5], var: [1, 4] },
+    amigable:    { sat: [0.30, 0.80], con: [0.08, 0.5], var: [1, 4] },
+    tranquil:    { sat: [0, 0.45], con: [0, 0.35], var: [1, 3] },
+    seren:       { sat: [0, 0.45], con: [0, 0.35], var: [1, 3] },
+    suave:       { sat: [0, 0.45], con: [0, 0.35], var: [1, 3] },
+    delicad:     { sat: [0, 0.45], con: [0, 0.35], var: [1, 3] },
+    modern:      { sat: [0.20, 0.90], con: [0.15, 1], var: [1, 4] },
+    contemporane:{ sat: [0.20, 0.90], con: [0.15, 1], var: [1, 4] },
+    artesanal:   { sat: [0.20, 0.65], con: [0.10, 0.5], var: [1, 4] },
+    natural:     { sat: [0.20, 0.65], con: [0.10, 0.5], var: [1, 4] },
+    organic:     { sat: [0.20, 0.65], con: [0.10, 0.5], var: [1, 4] },
+    clasic:      { sat: [0, 0.55], con: [0.15, 0.6], var: [1, 3] },
+    tradicional: { sat: [0, 0.55], con: [0.15, 0.6], var: [1, 3] }
+  };
+  function normaliza(t) { return t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim(); }
+  function buscaPerfil(palabra) {
+    var p = normaliza(palabra), claves = Object.keys(LEXICO);
+    for (var i = 0; i < claves.length; i++) if (p.indexOf(claves[i]) === 0) return LEXICO[claves[i]];
+    return null;
+  }
+  function cercania(v, rango, tol) {
+    if (v >= rango[0] && v <= rango[1]) return 1;
+    var d = v < rango[0] ? rango[0] - v : v - rango[1];
+    return Math.max(0, 1 - d / tol);
+  }
+
+  /* ---------- Diagnóstico ---------- */
+  function diagnosticar(red, palabras, marca) {
+    var res = { razones: [], consejos: [], marcaSinColores: false, sinBranding: false };
+
+    // 1. Personalidad
+    var reconocidas = [], noReconocidas = [];
+    palabras.forEach(function (w) {
+      var perfil = buscaPerfil(w);
+      if (!perfil) { noReconocidas.push(w); return; }
+      var sat = cercania(red.intensidad, perfil.sat, 0.25);
+      var con = cercania(red.contraste, perfil.con, 0.25);
+      var vari = cercania(red.variedad, perfil.var, 2);
+      var puntos = Math.round(((sat + con + vari) / 3) * 100);
+      reconocidas.push({ palabra: w, puntos: puntos, perfil: perfil });
+      var pedido = perfil.sat[0] > 0 ? "colores intensos (intensidad de " + Math.round(perfil.sat[0] * 100) + "% o más)" : "colores suaves (intensidad de " + Math.round(perfil.sat[1] * 100) + "% o menos)";
+      res.razones.push("Dijiste «" + w + "»: esperamos " + pedido + " y tu captura marca " + Math.round(red.intensidad * 100) + "%. Esta palabra encaja " + puntos + " de 100.");
+    });
+    res.personalidad = reconocidas.length ? Math.round(reconocidas.reduce(function (s, r) { return s + r.puntos; }, 0) / reconocidas.length) : null;
+    res.noReconocidas = noReconocidas;
+
+    // 2. Colores de la marca contra la red
+    res.colores = null;
+    if (marca && marca.paleta && marca.paleta.length) {
+      if (!red.paleta.length) {
+        res.colores = 0;
+        res.razones.push("Tu captura casi no tiene colores con carácter: se ve en blanco, negro y grises.");
+      } else {
+        var total = 0, peor = null;
+        marca.paleta.forEach(function (c) {
+          var mejor = Infinity;
+          red.paleta.forEach(function (p) { mejor = Math.min(mejor, dE(c.lab, p.lab)); });
+          var sim = Math.max(0, 1 - mejor / 50);
+          total += c.peso * sim;
+          if (!peor || sim < peor.sim) peor = { hex: c.hex, sim: sim, dist: mejor };
+        });
+        res.colores = Math.round(total * 100);
+        res.razones.push("Tus colores de marca y los de tu captura se parecen " + res.colores + " de 100.");
+        if (peor && peor.sim < 0.5) res.razones.push("Tu color " + peor.hex + " casi no aparece en tu red social.");
+      }
+    } else if (marca && marca.sinColores) {
+      res.marcaSinColores = true;
+    } else {
+      res.sinBranding = true;
+    }
+
+    // 3. Resultado final
+    var partes = [];
+    if (res.colores !== null) partes.push({ v: res.colores, p: 0.6 });
+    if (res.personalidad !== null) partes.push({ v: res.personalidad, p: 0.4 });
+    if (!partes.length) { res.total = null; return res; }
+    var sp = partes.reduce(function (s, x) { return s + x.p; }, 0);
+    res.total = Math.round(partes.reduce(function (s, x) { return s + x.v * x.p; }, 0) / sp);
+    var nivel = function (v, a, b) { return v >= a ? 2 : v >= b ? 1 : 0; };
+    var n = nivel(res.total, 70, 40);
+    // Si los colores no se parecen, la marca no está alineada aunque la intensidad sea correcta
+    if (res.colores !== null) n = Math.min(n, nivel(res.colores, 60, 40));
+    var porTotal = nivel(res.total, 70, 40);
+    res.veredicto = ["mal", "medio", "bien"][n];
+    if (n < porTotal) res.razones.push("Aunque otras partes encajan, los colores de tu marca y los de tu red no se parecen. Por eso el resultado es «" + { 0: "No está alineada", 1: "Hay que ajustar" }[n] + "».");
+    // Sin colores de marca para comparar, el resultado es solo parcial
+    if (res.colores === null) res.veredicto = "parcial";
+
+    // Consejos sencillos
+    if (res.colores !== null && res.colores < 60) res.consejos.push("Usa en tus publicaciones los colores de tu branding. Elige 2 o 3 y repítelos en fondos, textos y fotos.");
+    if (res.personalidad !== null && res.personalidad < 60) res.consejos.push("Ajusta la intensidad y el contraste de tus imágenes para que se sientan como las palabras que elegiste.");
+    if (res.sinBranding) res.consejos.push("Sin branding es difícil que tu contenido se reconozca. Definirlo es el primer paso.");
+    if (!res.consejos.length) res.consejos.push("Vas por buen camino. Mantén los mismos colores en todas tus publicaciones.");
+    return res;
+  }
+
+  /* ---------- Imágenes ---------- */
+  function cargarImagen(file) {
+    return new Promise(function (ok, fallo) {
+      var url = URL.createObjectURL(file), img = new Image();
+      img.onload = function () { ok({ img: img, url: url }); };
+      img.onerror = function () { fallo(new Error("No pude abrir la imagen «" + file.name + "». Prueba con un PNG o JPG.")); };
+      img.src = url;
+    });
+  }
+  function leerPixeles(img) {
+    var s = Math.min(1, 160 / img.naturalWidth);
+    var w = Math.max(1, Math.round(img.naturalWidth * s)), h = Math.max(1, Math.round(img.naturalHeight * s));
+    var c = document.createElement("canvas"); c.width = w; c.height = h;
+    var x = c.getContext("2d", { willReadFrequently: true });
+    x.drawImage(img, 0, 0, w, h);
+    return x.getImageData(0, 0, w, h).data;
+  }
+  function validaArchivo(f) {
+    if (!/^image\/(png|jpeg|webp)$/.test(f.type)) return "«" + f.name + "» no es una imagen PNG, JPG o WEBP.";
+    if (f.size > 8 * 1024 * 1024) return "«" + f.name + "» pesa más de 8 MB. Sube una más ligera.";
+    return null;
+  }
+
+  async function correr(entrada) {
+    // entrada: { redFile, palabras (texto), modo, brandFile, brandTexto }
+    if (!entrada.redFile) throw new Error("Sube la captura de tu red social.");
+    var e1 = validaArchivo(entrada.redFile); if (e1) throw new Error(e1);
+    var palabras = entrada.palabras.split(",").map(function (p) { return p.trim(); }).filter(Boolean);
+    if (palabras.length !== 3) throw new Error("Escribe exactamente 3 palabras separadas por coma. Ahora tengo " + palabras.length + ".");
+
+    var redImg = await cargarImagen(entrada.redFile);
+    var red = medirPixeles(leerPixeles(redImg.img));
+    if (!red) throw new Error("La captura parece vacía. Prueba con otra.");
+
+    var marca = null, paletaMarca = null;
+    if (entrada.modo === "img") {
+      if (!entrada.brandFile) throw new Error("Sube la imagen de tu branding o elige otra opción.");
+      var e2 = validaArchivo(entrada.brandFile); if (e2) throw new Error(e2);
+      var bi = await cargarImagen(entrada.brandFile);
+      marca = medirPixeles(leerPixeles(bi.img));
+      if (!marca || !marca.paleta.length) marca = { sinColores: true };
+    } else if (entrada.modo === "txt") {
+      var t = (entrada.brandTexto || "").trim();
+      if (!t) throw new Error("Escribe cómo es tu branding o elige otra opción.");
+      var codigos = (t.match(/#[0-9a-fA-F]{6}\b/g) || []).map(function (h) { return h.toUpperCase(); });
+      marca = codigos.length ? paletaDeHex(codigos.filter(function (h, i, a) { return a.indexOf(h) === i; })) : { sinColores: true };
+    }
+    var res = diagnosticar(red, palabras, marca);
+    res.paletaRed = red.paleta.map(function (p) { return p.hex; });
+    res.paletaMarca = marca && marca.paleta ? marca.paleta.map(function (p) { return p.hex; }) : [];
+    res.medidas = { intensidad: Math.round(red.intensidad * 100), contraste: Math.round(red.contraste * 100), variedad: red.variedad };
+    res.palabras = palabras;
+    return res;
+  }
+
+  /* ---------- Pantalla ---------- */
+  function chips(lista) {
+    return '<div class="chips">' + lista.map(function (h) { return '<span class="chip"><i style="background:' + h + '"></i>' + h + "</span>"; }).join("") + "</div>";
+  }
+  function waLink(lineas) { return "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(lineas.join("\n\n")); }
+  function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+  function pinta(res) {
+    var out = $("#resultado");
+    if (res.total === null) {
+      out.innerHTML = '<div class="card"><h2>Necesito un poco más</h2><p>No pude medir ninguna de tus palabras ni comparar tus colores. Prueba con palabras como disruptiva, creativa, elegante o minimalista, o escribe tus colores con su código, por ejemplo #D4FF3D.</p></div>';
+      return;
+    }
+    var etiqueta = { bien: "Va por buen camino", medio: "Hay que ajustar", mal: "No está alineada", parcial: "Resultado parcial" }[res.veredicto];
+    var cifra = res.veredicto === "parcial" ? res.personalidad : res.total;
+    var pie = res.veredicto === "parcial" ? " / 100 en personalidad" : " / 100";
+    var h = '<div class="card"><div class="score"><div class="num">' + cifra + '<small style="font-size:1.2rem">' + pie + "</small></div>" +
+      '<span class="verdict v-' + res.veredicto + '">' + etiqueta + "</span></div>";
+    h += '<div class="two"><div><h3>Colores de tu red</h3>' + chips(res.paletaRed) + "</div>";
+    h += '<div><h3>Colores de tu marca</h3>' + (res.paletaMarca.length ? chips(res.paletaMarca) : "<p>No pude medir colores de tu branding.</p>") + "</div></div>";
+    h += "<h3>Por qué</h3><ul>" + res.razones.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") + "</ul>";
+    if (res.noReconocidas.length) h += "<p class=\"hint\">No pude medir estas palabras: " + esc(res.noReconocidas.join(", ")) + ".</p>";
+    if (res.veredicto === "parcial") h += '<p class="hint">Es un resultado parcial: sin los colores de tu marca solo puedo medir la personalidad de tu captura.</p>';
+    if (res.marcaSinColores) h += '<p class="hint">Tu branding no trae colores que pueda leer. Si escribes los códigos de tus colores, como #D4FF3D, puedo compararlos.</p>';
+    h += "<h3>Qué hacer primero</h3><ul>" + res.consejos.map(function (c) { return "<li>" + esc(c) + "</li>"; }).join("") + "</ul>";
+    if (res.sinBranding) {
+      h += '<div class="offer"><h3>¿Todavía no tienes branding?</h3><p>En Vyko lo creamos contigo: logo, colores y tipografía para que tu marca se reconozca.</p><a class="btn" target="_blank" rel="noopener" href="' +
+        waLink(["Hola, Vyko.", "Vengo del diagnóstico de marca de la página web.", "Todavía no tengo branding y me interesa el servicio de branding."]) + '">Quiero mi branding →</a></div>';
+    }
+    h += '<div class="actions"><a class="btn dark" target="_blank" rel="noopener" href="' +
+      waLink(["Hola, Vyko.", "Vengo del diagnóstico de marca de la página web.", "Mi resultado fue " + cifra + " de 100: " + etiqueta + ".", "Quiero hablar para mejorar mi contenido."]) +
+      '">Hablar con Vyko →</a></div></div>';
+    out.innerHTML = h;
+    out.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function vistaPrevia(input, img) {
+    input.addEventListener("change", function () {
+      var f = input.files[0];
+      if (!f) { img.style.display = "none"; return; }
+      img.src = URL.createObjectURL(f); img.style.display = "block";
+    });
+  }
+  vistaPrevia($("#red"), $("#red-prev"));
+  vistaPrevia($("#brand-file"), $("#brand-prev"));
+
+  function modo() { return document.querySelector('input[name="brand"]:checked').value; }
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="brand"]'), function (r) {
+    r.addEventListener("change", function () {
+      $("#brand-img").hidden = modo() !== "img";
+      $("#brand-txt").hidden = modo() !== "txt";
+    });
+  });
+
+  $("#form").addEventListener("submit", async function (ev) {
+    ev.preventDefault();
+    $("#error").textContent = "";
+    try {
+      var res = await correr({
+        redFile: $("#red").files[0],
+        palabras: $("#palabras").value,
+        modo: modo(),
+        brandFile: $("#brand-file").files[0],
+        brandTexto: $("#brand-text").value
+      });
+      pinta(res);
+    } catch (e) {
+      $("#resultado").innerHTML = "";
+      $("#error").textContent = e.message;
+    }
+  });
+
+  // Para poder probar la función desde la consola
+  window.diagnostico = { correr: correr, pinta: pinta };
+})();
+</script>
 </body>
 </html>
