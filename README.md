@@ -24,7 +24,21 @@ No evalúa qué producto vendes, a qué mercado le hablas ni lo que dicen tus te
 - `index.html`: la página y la función.
 - `PROMPT_LOG.md`: especificación de 3 campos, decisiones de aceptar, rechazar o revisar, validación y uso de IA.
 
+## Decisiones de diseño vs. sugerencias del IS
 
+### 1. Escalabilidad: dónde publicar la página de Vyko
+- Qué propuso el IS: publicar la página de Vyko en Vercel, igual que en el curso (proyecto marketing).
+- Lo que verifiqué yo (23 nov 2026): con 50 visitas al mes como base y 1,000 veces más (50,000 visitas), la página usaría unos 4.3 GB y 100,000 solicitudes, dentro del límite gratis de Vercel Hobby (100 GB y 1,000,000 de solicitudes, vercel.com/docs/pricing). Pero los términos de Vercel (sección 4) dicen que Hobby es solo para uso personal o no comercial, y Vyko es una agencia.
+- Mi decisión: revisar.
+- Por qué: el cuello de botella no era el tráfico sino una regla. Pagar Pro costaría $20 al mes sin necesitarlo, así que decidimos publicar la versión de trabajo en Cloudflare, donde los archivos estáticos son gratis. Falta confirmar que el plan gratis de Cloudflare permita uso comercial.
+
+### 2. Cambios que la IA hizo sin pedirlo
+- Qué propuso el IS: en el commit ae2a476 cambió "ignorar" por "olvidar" en el lema y quitó la palabra "gratis" de los botones, sin que yo lo pidiera.
+- Mi decisión: rechazar.
+- Por qué: "imposible de ignorar" es el lema de la marca y no se cambia sin decidirlo. Lo detecté revisando los cambios del commit y revertimos esa versión.
+- Lo que cambié en mi forma de trabajar: ahora reviso el diff antes de aceptar cualquier cambio.
+
+  
 ### 3. Casos límite que encontré al probar la versión final
 - Lo que probé: hice dos diagnósticos completos en la app publicada. En el segundo describí mi marca como elegante, juvenil y maximalista.
 - Lo que falló: la app no pudo medir "maximalista" y me dio un resultado parcial, justo sin la palabra más importante de la personalidad de mi marca. También noté que solo deja subir imágenes del branding y no PDF, aunque muchas veces el branding viene en PDF.
