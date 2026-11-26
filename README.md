@@ -1,6 +1,6 @@
 # Diagnóstico de marca de Vyko
 
-Assignment 2 de Applied Algorithmic Thinking (LINQ03.2).
+Proyecto final de Applied Algorithmic Thinking (LINQ03.2), Assignments 2 y 3
 Helena Sofía Meneses Martínez
 
 Función nueva para la página de Vyko, una agencia de marketing. El cliente sube una captura de su red social, escribe en 3 palabras la personalidad que quiere proyectar y comparte su branding. La página dice si su red social se parece a su marca.
@@ -25,6 +25,7 @@ No evalúa qué producto vendes, a qué mercado le hablas ni lo que dicen tus te
 - `PROMPT_LOG.md`: especificación de 3 campos, decisiones de aceptar, rechazar o revisar, validación y uso de IA.
 
 ## Decisiones de diseño vs. sugerencias del IS
+Las entradas 1 y 2 pasaron en la versión de trabajo de la página de Vyko, que vive en otro repositorio privado que comparto con mi socio. Las documento aquí porque son decisiones del mismo proyecto.
 
 ### 1. Escalabilidad: dónde publicar la página de Vyko
 - Qué propuso el IS: publicar la página de Vyko en Vercel, igual que en el curso (proyecto marketing).
