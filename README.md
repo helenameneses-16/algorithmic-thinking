@@ -23,3 +23,10 @@ No evalúa qué producto vendes, a qué mercado le hablas ni lo que dicen tus te
 
 - `index.html`: la página y la función.
 - `PROMPT_LOG.md`: especificación de 3 campos, decisiones de aceptar, rechazar o revisar, validación y uso de IA.
+
+
+### 3. Casos límite que encontré al probar la versión final
+- Lo que probé: [qué hiciste, por ejemplo el diagnóstico con las palabras elegante, juvenil y maximalista]
+- Lo que falló: [maximalista no se pudo medir y el resultado quedó parcial; solo acepta imágenes y no PDF]
+- Mi decisión: [no lo cambié antes de entregar para no romper una función que sí sirve, y lo dejo documentado]
+- Qué haría después: [agregar maximalista a las palabras que se pueden medir y aceptar archivos PDF]
