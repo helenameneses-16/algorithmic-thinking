@@ -26,7 +26,7 @@ No evalúa qué producto vendes, a qué mercado le hablas ni lo que dicen tus te
 
 
 ### 3. Casos límite que encontré al probar la versión final
-- Lo que probé: [qué hiciste, por ejemplo el diagnóstico con las palabras elegante, juvenil y maximalista]
-- Lo que falló: [maximalista no se pudo medir y el resultado quedó parcial; solo acepta imágenes y no PDF]
-- Mi decisión: [no lo cambié antes de entregar para no romper una función que sí sirve, y lo dejo documentado]
-- Qué haría después: [agregar maximalista a las palabras que se pueden medir y aceptar archivos PDF]
+- Lo que probé: hice dos diagnósticos completos en la app publicada. En el segundo describí mi marca como elegante, juvenil y maximalista.
+- Lo que falló: la app no pudo medir "maximalista" y me dio un resultado parcial, justo sin la palabra más importante de la personalidad de mi marca. También noté que solo deja subir imágenes del branding y no PDF, aunque muchas veces el branding viene en PDF.
+- Mi decisión: no cambié la palabra para que la app sí me diera un resultado completo, porque eso escondería el problema en vez de resolverlo. Lo dejo documentado.
+- Qué haría después: agregar una lista más grande de palabras de personalidad para que la app entienda más descripciones, y aceptar archivos PDF además de imágenes.
